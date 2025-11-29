@@ -2,15 +2,42 @@
 
 import streamlit as st
 from pathlib import Path
+import base64
 
 
 def load_css():
-    """Load custom CSS styles."""
+    """Load custom CSS styles with background image."""
     css_file = Path(__file__).parent.parent.parent / "assets" / "styles.css"
+    bg_image = Path(__file__).parent.parent.parent / "assets" / "backgrounds" / "drishti_ai_bg_4_1764420887041.png"
     
+    # Load main CSS
     if css_file.exists():
         with open(css_file) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    
+    # Add background image
+    if bg_image.exists():
+        with open(bg_image, "rb") as img_file:
+            bg_base64 = base64.b64encode(img_file.read()).decode()
+        
+        bg_style = f"""
+        <style>
+        .stApp {{
+            background: linear-gradient(
+                135deg,
+                rgba(13, 27, 42, 0.85) 0%,
+                rgba(27, 38, 59, 0.82) 50%,
+                rgba(65, 90, 119, 0.80) 100%
+            ),
+            url('data:image/png;base64,{bg_base64}') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+            background-repeat: no-repeat !important;
+        }}
+        </style>
+        """
+        st.markdown(bg_style, unsafe_allow_html=True)
 
 
 def render_header():
