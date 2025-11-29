@@ -29,20 +29,6 @@ wheels/
 
 # IDE
 .vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# ChromaDB
-chromadb_storage/
-!chromadb_storage/.gitkeep
-
-# Processed data
-data/processed/
-!data/processed/.gitkeep
-
-# Logs
 *.log
 logs/
 
