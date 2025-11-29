@@ -1,0 +1,383 @@
+/* Drishti AI - Divine Aesthetics */
+
+/* ===== GLOBAL STYLES ===== */
+:root {
+    --golden: #FFD700;
+    --golden-dark: #DAA520;
+    --golden-light: #FFF8DC;
+    --cosmic-dark: #0a0e27;
+    --cosmic-medium: #1a1a2e;
+    --cosmic-light: #16213e;
+    --divine-blue: #4169E1;
+    --saffron: #FF9933;
+    --white: #FFFFFF;
+    --shadow-golden: 0 0 20px rgba(255, 215, 0, 0.3);
+    --shadow-strong: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== MAIN APP BACKGROUND ===== */
+.stApp {
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Dynamic background overlay */
+.stApp::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 14, 39, 0.7);
+    z-index: -1;
+}
+
+/* ===== HEADER ===== */
+.main-header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
+    border-bottom: 2px solid var(--golden);
+    margin-bottom: 2rem;
+}
+
+.main-header h1 {
+    font-size: 3rem;
+    color: var(--golden);
+    text-shadow: var(--shadow-golden);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.main-header h3 {
+    font-size: 1.2rem;
+    color: var(--golden-light);
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5),
+                     0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                     0 0 30px rgba(255, 215, 0, 0.5),
+                     0 0 40px rgba(255, 215, 0, 0.3);
+    }
+}
+
+/* ===== CHAT CONTAINER ===== */
+.chat-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* ===== CHAT MESSAGES ===== */
+.stChatMessage {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stChatMessage:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-golden);
+}
+
+/* Krishna's messages - Golden theme */
+.stChatMessage[data-testid*="assistant"] {
+    border-left: 4px solid var(--golden);
+    background: linear-gradient(90deg, 
+        rgba(255, 215, 0, 0.15) 0%, 
+        rgba(255, 215, 0, 0.05) 100%);
+}
+
+/* User messages - Clean theme */
+.stChatMessage[data-testid*="user"] {
+    border-left: 4px solid #4ECDC4;
+    background: linear-gradient(90deg, 
+        rgba(78, 205, 196, 0.15) 0%, 
+        rgba(78, 205, 196, 0.05) 100%);
+}
+
+/* ===== CHAT INPUT ===== */
+.stChatInputContainer {
+    position: sticky;
+    bottom: 0;
+    padding: 1.5rem;
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(10, 14, 39, 0.95) 20%);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid var(--golden);
+    z-index: 100;
+}
+
+.stChatInput {
+    background: rgba(255, 215, 0, 0.1) !important;
+    border: 2px solid var(--golden) !important;
+    border-radius: 25px !important;
+    padding: 1rem 1.5rem !important;
+    color: var(--white) !important;
+    font-size: 1rem !important;
+    box-shadow: var(--shadow-golden);
+    transition: all 0.3s ease;
+}
+
+.stChatInput:focus {
+    background: rgba(255, 215, 0, 0.15) !important;
+    box-shadow: var(--shadow-strong);
+    border-color: var(--golden-light) !important;
+}
+
+.stChatInput::placeholder {
+    color: rgba(255, 215, 0, 0.6) !important;
+}
+
+/* ===== SIDEBAR ===== */
+.css-1d391kg, [data-testid="stSidebar"] {
+    background: linear-gradient(180deg, 
+        rgba(26, 26, 46, 0.95) 0%, 
+        rgba(16, 33, 62, 0.95) 100%) !important;
+    backdrop-filter: blur(10px);
+    border-right: 2px solid var(--golden);
+}
+
+.css-1d391kg h1, 
+.css-1d391kg h2, 
+.css-1d391kg h3,
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    color: var(--golden) !important;
+    text-shadow: var(--shadow-golden);
+}
+
+/* Sidebar dividers */
+.css-1d391kg hr,
+[data-testid="stSidebar"] hr {
+    border-color: var(--golden) !important;
+    opacity: 0.3;
+}
+
+/* ===== BUTTONS ===== */
+.stButton > button {
+    background: linear-gradient(135deg, var(--golden-dark) 0%, var(--golden) 100%);
+    color: var(--cosmic-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-golden);
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, var(--golden) 0%, var(--golden-light) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
+}
+
+.stButton > button:active {
+    transform: translateY(0);
+}
+
+/* ===== SELECT BOXES ===== */
+.stSelectbox > div > div {
+    background-color: rgba(255, 215, 0, 0.1) !important;
+    border: 2px solid var(--golden) !important;
+    border-radius: 10px !important;
+    color: var(--white) !important;
+}
+
+.stSelectbox label {
+    color: var(--golden-light) !important;
+    font-weight: 600;
+}
+
+/* ===== RADIO BUTTONS ===== */
+.stRadio > label {
+    color: var(--golden-light) !important;
+    font-weight: 600;
+}
+
+.stRadio > div {
+    background-color: rgba(255, 215, 0, 0.05);
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+/* ===== METRICS ===== */
+.stMetric {
+    background: rgba(255, 215, 0, 0.1);
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--golden);
+}
+
+.stMetric label {
+    color: var(--golden-light) !important;
+}
+
+.stMetric [data-testid="stMetricValue"] {
+    color: var(--golden) !important;
+    font-size: 2rem !important;
+    font-weight: 700;
+}
+
+/* ===== EXPANDER ===== */
+.streamlit-expanderHeader {
+    background-color: rgba(255, 215, 0, 0.1) !important;
+    border: 1px solid var(--golden) !important;
+    border-radius: 10px !important;
+    color: var(--golden) !important;
+    font-weight: 600;
+}
+
+.streamlit-expanderContent {
+    background-color: rgba(255, 215, 0, 0.05) !important;
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+    border-top: none !important;
+    border-radius: 0 0 10px 10px !important;
+}
+
+/* ===== SPINNER ===== */
+.stSpinner > div {
+    border-color: var(--golden) !important;
+    border-right-color: transparent !important;
+}
+
+/* ===== WARNING/INFO BOXES ===== */
+.stWarning {
+    background-color: rgba(255, 153, 51, 0.1) !important;
+    border-left: 4px solid var(--saffron) !important;
+    color: var(--golden-light) !important;
+}
+
+.stInfo {
+    background-color: rgba(65, 105, 225, 0.1) !important;
+    border-left: 4px solid var(--divine-blue) !important;
+    color: var(--golden-light) !important;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cosmic-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--golden-dark) 0%, var(--golden) 100%);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--golden);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stChatMessage {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* ===== MOBILE RESPONSIVENESS ===== */
+@media (max-width: 768px) {
+    .main-header h1 {
+        font-size: 2rem;
+    }
+    
+    .main-header h3 {
+        font-size: 1rem;
+    }
+    
+    .stChatMessage {
+        padding: 1rem;
+    }
+    
+    .chat-container {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .main-header h3 {
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+    
+    .stChatInput {
+        font-size: 0.9rem !important;
+        padding: 0.75rem 1rem !important;
+    }
+}
+
+/* ===== GOLDEN FLAME EFFECT ===== */
+.flame-container {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 99;
+}
+
+.flame {
+    width: 20px;
+    height: 30px;
+    background: linear-gradient(to top, var(--golden) 0%, var(--saffron) 50%, transparent 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 1.5s ease-in-out infinite;
+    opacity: 0.8;
+    filter: blur(2px);
+}
+
+@keyframes flicker {
+    0%, 100% {
+        transform: scaleY(1) scaleX(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scaleY(1.2) scaleX(0.9);
+        opacity: 1;
+    }
+}

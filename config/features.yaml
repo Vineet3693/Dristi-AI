@@ -1,0 +1,75 @@
+features:
+  voice:
+    enabled: false
+    methods:
+      web_speech_api: true
+      browser_tts: true
+      pre_generated_audio: false
+      gtts: false
+    settings:
+      default_method: "browser_tts"
+      show_method_selector: false
+  
+  chapter_navigator:
+    enabled: true
+    settings:
+      views: ['chapter', 'theme', 'search']
+      default_view: 'chapter'
+      themes_enabled: true
+      export_enabled: true
+  
+  life_guidance:
+    enabled: true
+    settings:
+      use_internet: true
+      use_gita_context: true
+      max_verses: 5
+      response_format: "structured"
+      show_in_sidebar: true
+      categories:
+        - "Career & Purpose"
+        - "Relationships & Family"
+        - "Mental Peace & Stress"
+        - "Decision Making"
+        - "Spiritual Growth"
+        - "Health & Well-being"
+        - "Financial Concerns"
+        - "Life Direction"
+        - "Other"
+  
+  response_tone:
+    enabled: true
+    default_tone: 'modern'
+    tones:
+      spiritual:
+        enabled: true
+        name: 'Spiritual & Poetic'
+        icon: '🕉️'
+      scholarly:
+        enabled: true
+        name: 'Scholarly'
+        icon: '🧠'
+      modern:
+        enabled: true
+        name: 'Modern & Relatable'
+        icon: '💬'
+      devotional:
+        enabled: true
+        name: 'Devotional'
+        icon: '🙏'
+  
+  conversational_memory:
+    enabled: true
+    settings:
+      session_duration: 3600
+      max_queries_stored: 100
+      show_journey_dashboard: true
+      show_connections: true
+      auto_recommendations: true
+  
+  export:
+    enabled: true
+    formats: ['pdf', 'docx']
+    languages: ['hindi', 'english', 'sanskrit']
+    watermark: "Drishti AI Thoughts of Vineet"
+    colored_export: true
