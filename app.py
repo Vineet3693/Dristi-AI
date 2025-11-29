@@ -12,7 +12,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 
 from src.core.query_handler import QueryHandler
-from src.core.embedding_manager import EmbeddingManager
+from src.core.inmemory_embedding_manager import InMemoryEmbeddingManager
 from src.core.data_processor import DataProcessor
 from src.ui.base_components import load_css, render_header
 from src.features.feature_registry import FeatureRegistry
@@ -23,6 +23,7 @@ from src.features.voice_handler import VoiceHandler
 from config.settings import APP_TITLE, APP_ICON, LANGUAGES, RESPONSE_TONES, SEARCH_MODES
 import tempfile
 from pathlib import Path
+import os
 
 
 # Page configuration
@@ -47,7 +48,8 @@ def initialize_session_state():
         st.session_state.query_handler = QueryHandler()
     
     if 'embedding_manager' not in st.session_state:
-        st.session_state.embedding_manager = EmbeddingManager()
+        # Use in-memory manager for Streamlit Cloud (read-only filesystem)
+        st.session_state.embedding_manager = InMemoryEmbeddingManager()
         st.session_state.embedding_manager.initialize_collection()
     
     if 'data_processor' not in st.session_state:
