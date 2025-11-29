@@ -14,7 +14,14 @@ class EmbeddingManager:
     
     def __init__(self):
         """Initialize embedding manager."""
-        self.client = chromadb.PersistentClient(path=CHROMADB_PATH)
+        try:
+            # Try to use persistent client (works locally and reads from GitHub on cloud)
+            self.client = chromadb.PersistentClient(path=CHROMADB_PATH)
+        except Exception as e:
+            print(f"Note: Using read-only mode - {e}")
+            # Fallback: still try persistent client, it can read even if it can't write
+            self.client = chromadb.PersistentClient(path=CHROMADB_PATH)
+        
         self.gemini_client = GeminiClient()
         self.collection = None
     

@@ -12,7 +12,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 
 from src.core.query_handler import QueryHandler
-from src.core.inmemory_embedding_manager import InMemoryEmbeddingManager
+from src.core.embedding_manager import EmbeddingManager
 from src.core.data_processor import DataProcessor
 from src.ui.base_components import load_css, render_header
 from src.features.feature_registry import FeatureRegistry
@@ -48,8 +48,8 @@ def initialize_session_state():
         st.session_state.query_handler = QueryHandler()
     
     if 'embedding_manager' not in st.session_state:
-        # Use in-memory manager for Streamlit Cloud (read-only filesystem)
-        st.session_state.embedding_manager = InMemoryEmbeddingManager()
+        # Use ChromaDB to load pushed embeddings from GitHub
+        st.session_state.embedding_manager = EmbeddingManager()
         st.session_state.embedding_manager.initialize_collection()
     
     if 'data_processor' not in st.session_state:
@@ -283,59 +283,29 @@ def main():
     # Check if embeddings exist
     stats = st.session_state.embedding_manager.get_stats()
     if stats['total_verses'] == 0:
-        st.info("🕉️ **First-time setup detected**")
-        st.write("Drishti AI needs to create embeddings from the Bhagavad Gita.")
-        st.write("This is a one-time process that will take 5-10 minutes.")
+        st.error("⚠️ **Embeddings not loaded!**")
+        st.write("The embeddings should be automatically available from the repository.")
+        st.write("If you see this message, there may be an issue with the deployment.")
         
-        if st.button("🚀 Create Embeddings Now", type="primary", use_container_width=True):
-            with st.spinner("Creating embeddings from 640 verses... Please wait..."):
-                try:
-                    # Try to re-initialize first (in case chromadb files exist)
-                    st.session_state.embedding_manager.initialize_collection()
-                    stats_check = st.session_state.embedding_manager.get_stats()
-                    
-                    if stats_check['total_verses'] > 0:
-                        st.success(f"✅ Successfully loaded {stats_check['total_verses']} verses from storage!")
-                        st.balloons()
-                        import time
-                        time.sleep(2)
-                        st.rerun()
-                    else:
-                        # Chromadb storage not found, create embeddings from CSV
-                        st.info("📊 ChromaDB storage not found. Creating embeddings from CSV...")
-                        
-                        # Create embeddings
-                        st.session_state.embedding_manager.create_embeddings(force_recreate=False)
-                        
-                        # Verify
-                        stats_new = st.session_state.embedding_manager.get_stats()
-                        if stats_new['total_verses'] > 0:
-                            st.success(f"✅ Successfully created embeddings for {stats_new['total_verses']} verses!")
-                            st.balloons()
-                            import time
-                            time.sleep(2)
-                            st.rerun()
-                        else:
-                            st.error("❌ Failed to create embeddings.")
-                            st.info("💡 **Troubleshooting:**")
-                            st.write("1. Ensure GOOGLE_API_KEY is set in Streamlit secrets")
-                            st.write("2. Check that data/bhagavad_gita.csv exists")
-                            st.write("3. Verify you have internet connection")
-                        
-                except Exception as e:
-                    st.error(f"❌ Error: {str(e)}")
-                    st.info("💡 **Troubleshooting:**")
-                    st.write("1. Ensure GOOGLE_API_KEY is set in Streamlit secrets")
-                    st.write("2. Check that data/bhagavad_gita.csv exists in the repository")
-                    st.write("3. Verify the app has read access to files")
-                    import traceback
-                    with st.expander("🔍 Technical Details"):
-                        st.code(traceback.format_exc())
+        with st.expander("🔍 Troubleshooting"):
+            st.write("**Possible issues:**")
+            st.write("1. ChromaDB files not properly deployed from GitHub")
+            st.write("2. File permissions issue on Streamlit Cloud")
+            st.write("3. ChromaDB path configuration problem")
+            st.write("")
+            st.write(f"**ChromaDB Path:** `{stats.get('storage_path', 'unknown')}`")
+            st.write(f"**Collection:** `{stats.get('collection_name', 'unknown')}`")
+            
+            # Check if chromadb folder exists
+            import os
+            chromadb_exists = os.path.exists('chromadb_storage')
+            st.write(f"**ChromaDB folder exists:** `{chromadb_exists}`")
+            
+            if chromadb_exists:
+                files = os.listdir('chromadb_storage')
+                st.write(f"**Files in chromadb_storage:** `{files}`")
         
-        st.warning("""
-        **Note:** This will use the Gemini API to create embeddings.  
-        Make sure your GOOGLE_API_KEY is set in Streamlit Cloud secrets.
-        """)
+        st.info("💡 **Expected:** The app should load 640 verses automatically from the chromadb_storage folder in the repository.")
         return
     
     # Tabs for different features
