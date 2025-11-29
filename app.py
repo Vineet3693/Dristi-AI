@@ -281,15 +281,36 @@ def main():
     # Check if embeddings exist
     stats = st.session_state.embedding_manager.get_stats()
     if stats['total_verses'] == 0:
+        st.info("🕉️ **First-time setup detected**")
+        st.write("Drishti AI needs to load embeddings. Click the button below to start.")
+        
+        if st.button("🚀 Initialize Embeddings", type="primary", use_container_width=True):
+            with st.spinner("Loading embeddings... This may take a moment..."):
+                try:
+                    # Re-initialize to pick up the pushed embeddings
+                    st.session_state.embedding_manager.initialize_collection()
+                    stats_new = st.session_state.embedding_manager.get_stats()
+                    
+                    if stats_new['total_verses'] > 0:
+                        st.success(f"✅ Successfully loaded {stats_new['total_verses']} verses!")
+                        st.balloons()
+                        import time
+                        time.sleep(2)
+                        st.rerun()
+                    else:
+                        st.error("❌ No embeddings found. Please ensure chromadb_storage folder is properly deployed.")
+                        st.info("💡 **Troubleshooting:** The chromadb_storage folder should be in your repository.")
+                        
+                except Exception as e:
+                    st.error(f"❌ Error loading embeddings: {str(e)}")
+                    st.info("💡 **Troubleshooting:**")
+                    st.write("1. Ensure chromadb_storage folder is in the repository")
+                    st.write("2. Check that GOOGLE_API_KEY is set in Streamlit secrets")
+                    st.write("3. Verify the app has read access to files")
+        
         st.warning("""
-        ⚠️ **Embeddings not created yet!**
-        
-        Please run the setup script:
-        ```bash
-        python setup.py
-        ```
-        
-        This is a one-time setup that will process all 700 verses of the Bhagavad Gita.
+        **Note:** Embeddings should be automatically available from the repository.  
+        If you see this message, click the button above to initialize.
         """)
         return
     
